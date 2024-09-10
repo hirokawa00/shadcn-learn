@@ -5,6 +5,7 @@
   },
   "linter": {
     "enabled": true,
+    "ignore": ["ui"],
     "rules": {
       "recommended": true
     }
@@ -14,5 +15,12 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 120
+  },
+  "javascript": {
+    "formatter": {
+      "enabled": true,
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "double"
+    }
   }
 }
