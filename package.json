@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "fe": "pnpm -C apps/frontend",
     "dev": "turbo dev"
   },
   "keywords": [],
