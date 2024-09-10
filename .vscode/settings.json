@@ -1,5 +1,9 @@
 {
+  "typescript.updateImportsOnFileMove.enabled": "always",
   "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always"
+  },
   "editor.defaultFormatter": "biomejs.biome",
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"

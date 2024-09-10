@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "noUnusedLocals": true, // 未使用の変数やインポートを警告
+    "noUnusedParameters": true, // 未使用の関数パラメーターを警告
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
