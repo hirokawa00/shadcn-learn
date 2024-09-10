@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "biome check --write ./src/**]"
+    "tsc": "tsc ./src",
+    "lint": "biome check --write ./src"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.1",
