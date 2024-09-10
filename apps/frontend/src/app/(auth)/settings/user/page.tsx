@@ -1,24 +1,20 @@
 'use client';
 
 import { ContentLayout } from '@/components/admin-panel/content-layout';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ChevronDown, ChevronUp, Pencil, Plus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { GenericTable } from '@/components/generic-table';
+import type { ColumnDef } from '@tanstack/react-table';
+
+type UserType = {
+  id: number; // ユーザーのID
+  name: string; // 名前
+  email: string; // メールアドレス
+  role: string; // 役割
+  store: string; // 所属店舗
+  status: string; // ステータス
+};
 
 // ダミーデータ
-const users = [
+const data = [
   { id: 1, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
   {
     id: 2,
@@ -111,49 +107,44 @@ const users = [
 ];
 
 export default function page() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortColumn, setSortColumn] = useState('name');
-  const [sortDirection, setSortDirection] = useState('asc');
-
-  const handleSort = (column) => {
-    if (column === sortColumn) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortColumn(column);
-      setSortDirection('asc');
-    }
-  };
-
-  const sortedUsers = [...users].sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1;
-    if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1;
-    return 0;
-  });
-
-  const filteredUsers = sortedUsers.filter((user) =>
-    Object.values(user).some((value) => value.toString().toLowerCase().includes(searchTerm.toLowerCase())),
-  );
+  // カラムの型定義
+  const columns: ColumnDef<UserType>[] = [
+    {
+      accessorKey: 'id',
+      header: 'ID',
+      cell: (info) => info.getValue(),
+    },
+    {
+      accessorKey: 'name',
+      header: '名前',
+      cell: (info) => info.getValue(),
+    },
+    {
+      accessorKey: 'email',
+      header: 'メールアドレス',
+      cell: (info) => info.getValue(),
+    },
+    {
+      accessorKey: 'role',
+      header: '役割',
+      cell: (info) => info.getValue(),
+    },
+    {
+      accessorKey: 'store',
+      header: '所属店舗',
+      cell: (info) => info.getValue(),
+    },
+    {
+      accessorKey: 'status',
+      header: 'ステータス',
+      cell: (info) => info.getValue(),
+    },
+  ];
 
   return (
     <ContentLayout title="ユーザー管理">
-      <div className="flex justify-between items-center mb-4">
-        <div className="mb-4">
-          <Input placeholder="ユーザーを検索..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-        </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" /> 新規ユーザー登録
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>新規ユーザー登録</DialogTitle>
-            </DialogHeader>
-            {/* ユーザー登録フォームをここに配置 */}
-          </DialogContent>
-        </Dialog>
-      </div>
+      <GenericTable data={data} columns={columns} />
+      {/*
       <Table className="">
         <TableHeader className=" sticky top-[60px] z-10 dark:bg-primary-foreground">
           <TableRow>
@@ -226,7 +217,7 @@ export default function page() {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table> */}
       {/* ページネーションコンポーネントをここに追加 */}
     </ContentLayout>
   );
