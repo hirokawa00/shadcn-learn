@@ -1,4 +1,4 @@
-import { Bookmark, LayoutGrid, type LucideIcon, Settings, SquarePen, Tag, Users } from 'lucide-react';
+import { Bookmark, HomeIcon, type LucideIcon, Settings, SquarePen, Tag, Users } from 'lucide-react';
 
 type Submenu = {
   href: string;
@@ -25,32 +25,32 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: '',
       menus: [
         {
-          href: '/dashboard',
-          label: 'Dashboard',
+          href: '/',
+          label: 'Home',
           active: pathname.includes('/dashboard'),
-          icon: LayoutGrid,
+          icon: HomeIcon,
           submenus: [],
         },
       ],
     },
     {
-      groupLabel: 'Contents',
+      groupLabel: 'Menu',
       menus: [
         {
           href: '',
-          label: 'Posts',
-          active: pathname.includes('/posts'),
+          label: '販売管理',
+          active: pathname.includes('/sales'),
           icon: SquarePen,
           submenus: [
             {
-              href: '/posts',
-              label: 'All Posts',
-              active: pathname === '/posts',
+              href: '/sales/detail',
+              label: '売上明細',
+              active: pathname === '/sales/detail',
             },
             {
-              href: '/posts/new',
-              label: 'New Post',
-              active: pathname === '/posts/new',
+              href: '/sales/summary',
+              label: '売上集計',
+              active: pathname === '/sales/summary',
             },
           ],
         },
@@ -74,16 +74,23 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: 'Settings',
       menus: [
         {
-          href: '/users',
-          label: 'Users',
-          active: pathname.includes('/users'),
+          href: '/settings/user',
+          label: 'ユーザー管理',
+          active: pathname.includes('/user'),
           icon: Users,
           submenus: [],
         },
         {
-          href: '/account',
-          label: 'Account',
-          active: pathname.includes('/account'),
+          href: '/settings/store',
+          label: '店舗管理',
+          active: pathname.includes('/store'),
+          icon: Settings,
+          submenus: [],
+        },
+        {
+          href: '/settings/product',
+          label: '商品管理',
+          active: pathname.includes('/product'),
           icon: Settings,
           submenus: [],
         },
