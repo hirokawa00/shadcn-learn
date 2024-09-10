@@ -29,6 +29,84 @@ const users = [
     status: '有効',
   },
   { id: 3, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 4, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 5,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 6, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 7, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 8,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 9, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 10, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 11,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 12, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 14,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  {
+    id: 11,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 12, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 14,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  {
+    id: 11,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 12, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 14,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
   // 他のユーザーデータ...
 ];
 
@@ -59,7 +137,9 @@ export default function page() {
   return (
     <ContentLayout title="ユーザー管理">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">ユーザー管理</h1>
+        <div className="mb-4">
+          <Input placeholder="ユーザーを検索..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+        </div>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
@@ -74,11 +154,8 @@ export default function page() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="mb-4">
-        <Input placeholder="ユーザーを検索..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-      </div>
-      <Table>
-        <TableHeader>
+      <Table className="">
+        <TableHeader className=" sticky top-[60px] z-10 dark:bg-primary-foreground">
           <TableRow>
             <TableHead onClick={() => handleSort('name')} className="cursor-pointer">
               名前{' '}
