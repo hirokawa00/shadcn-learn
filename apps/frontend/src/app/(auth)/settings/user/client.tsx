@@ -2,154 +2,38 @@
 
 import { ContentLayout } from '@/components/admin-panel/content-layout';
 import { GenericTable, GenericTableColumnHeader } from '@/components/generic-table';
+import { Checkbox } from '@/components/ui/checkbox';
+import type { User } from '@prisma/client';
 import { ArrowDownIcon, ArrowRightIcon, ArrowUpIcon } from '@radix-ui/react-icons';
 import type { ColumnDef } from '@tanstack/react-table';
 
-type UserType = {
-  id: number; // ユーザーのID
-  name: string; // 名前
-  email: string; // メールアドレス
-  role: string; // 役割
-  store: string; // 所属店舗
-  status: string; // ステータス
-};
+interface ClientProps {
+  user: User[];
+}
 
-// ダミーデータ
-const data = [
-  { id: 1, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 2,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 3, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 4, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 5,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 6, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 7, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 8,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 9, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 10, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 11,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 12, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 14,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  {
-    id: 11,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 12, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 14,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  {
-    id: 11,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 12, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 14,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 14,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 14,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 14,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
-  {
-    id: 14,
-    name: '佐藤 花子',
-    email: 'hanako.sato@example.com',
-    role: 'マネージャー',
-    store: '大阪支店',
-    status: '有効',
-  },
-  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
-  // 他のユーザーデータ...
-];
-
-export function Client() {
+export function Client({ user }: ClientProps) {
   // カラムの型定義
-  const columns: ColumnDef<UserType>[] = [
+  const columns: ColumnDef<User>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected()} // ページ内すべての行が選択されているか確認
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)} // ページ内の全行を選択/解除
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()} // 行が選択されているか確認
+          onCheckedChange={(value) => row.toggleSelected(!!value)} // 行を選択/解除
+          aria-label={`Select row ${row.index + 1}`} // アクセシビリティ用のラベル
+        />
+      ),
+      enableHiding: false, // チェックボックスのカラムが隠れないように
+      enableSorting: false, // ソートを無効化
+      size: 50, // カラムの幅を指定
+    },
     {
       accessorKey: 'id',
       cell: (info) => info.getValue(),
@@ -177,9 +61,26 @@ export function Client() {
       cell: (info) => info.getValue(),
     },
     {
-      accessorKey: 'status',
-      header: 'ステータス',
-      cell: (info) => info.getValue(),
+      accessorKey: 'lastLogin',
+      header: '最終ログイン日時',
+      cell: (info) => {
+        const dateValue = info.getValue() as string | null;
+        if (!dateValue) return '';
+
+        // 日付フォーマットの指定（日本時間、YYYY-MM-DD HH:mm:ss）
+        const formattedDate = new Intl.DateTimeFormat('ja-JP', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          timeZone: 'Asia/Tokyo', // 日本時間に変換
+          hour12: false, // 24時間形式
+        }).format(new Date(dateValue));
+
+        return formattedDate;
+      },
     },
   ];
 
@@ -204,7 +105,7 @@ export function Client() {
   return (
     <ContentLayout title="ユーザー管理">
       <GenericTable
-        data={data}
+        data={user}
         columns={columns}
         filters={[
           { columnName: 'store', title: '所属店舗', options: priorities },

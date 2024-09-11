@@ -1,6 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Cross2Icon,
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from '@radix-ui/react-icons';
 import type { Table } from '@tanstack/react-table';
 
 interface DataTablePaginationProps<TData> {
@@ -9,9 +15,18 @@ interface DataTablePaginationProps<TData> {
 
 export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-between px-2">
+    <div className="flex items-center justify-between px-1">
       <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+        {table.getFilteredSelectedRowModel().rows.length >= 1 ? (
+          <div className="flex items-center">
+            <Button variant="outline" onClick={() => table.resetRowSelection()} className="h-8 lg:px-3">
+              <Cross2Icon className="h-4 w-4 mr-2" />
+              <span>{table.getFilteredSelectedRowModel().rows.length} row selected</span>
+            </Button>
+          </div>
+        ) : (
+          <span>{table.getFilteredRowModel().rows.length} rows </span>
+        )}
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">

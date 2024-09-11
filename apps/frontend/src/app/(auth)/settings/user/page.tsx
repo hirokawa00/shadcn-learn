@@ -6,7 +6,7 @@ export default async function Page() {
   console.log('data', data);
   return (
     <div>
-      <Client />
+      <Client user={data} />
     </div>
   );
 }

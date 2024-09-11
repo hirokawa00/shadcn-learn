@@ -10,7 +10,14 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon } from '@radix-ui/react-icons';
-import type { Column, ColumnDef, ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/react-table';
+import type {
+  Column,
+  ColumnDef,
+  ColumnFiltersState,
+  PaginationState,
+  SortingState,
+  VisibilityState,
+} from '@tanstack/react-table';
 import {
   flexRender,
   getCoreRowModel,
@@ -31,13 +38,24 @@ interface GenericTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filters?: filterData[];
+  pageSize?: number;
 }
 
-export function GenericTable<TData, TValue>({ columns, data, filters }: GenericTableProps<TData, TValue>) {
+export function GenericTable<TData, TValue>({
+  columns,
+  data,
+  filters,
+  pageSize = 50,
+}: GenericTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  // デフォルトのページネーション設定
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0, // デフォルトのページ番号
+    pageSize: pageSize, // デフォルトのページサイズ
+  });
 
   const table = useReactTable({
     data,
@@ -47,12 +65,14 @@ export function GenericTable<TData, TValue>({ columns, data, filters }: GenericT
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination: pagination,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

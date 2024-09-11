@@ -14,6 +14,24 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Department {
+  id             Int       @id @default(autoincrement()) // 部門のID
+  departmentCode String    @unique                      // 部門コード (ユニーク)
+  name           String                                // 部門名
+  products       Product[]                             // 商品との1対多リレーション
+}
+
+model Product {
+  id           Int        @id @default(autoincrement()) // 商品のID
+  janCode      String     @unique                      // JANコード (ユニーク)
+  name         String                                   // 商品名
+  price        Float                                    // 商品価格
+  departmentId Int                                      // 部門ID (外部キー)
+  department   Department @relation(fields: [departmentId], references: [id]) // 部門とのリレーション
+  sales        Sale[]                                   // 売上実績との1対多リレーション
+}
+
+
 model User {
   id           Int      @id @default(autoincrement()) // ユーザーのID
   name         String                                    // 名前
@@ -24,4 +42,26 @@ model User {
   createdAt    DateTime @default(now())                  // データ作成日
   updatedAt    DateTime @updatedAt                       // 更新日
   lastLogin    DateTime?                                 // 最終ログイン日 (null許可)
+}
+
+
+model Store {
+  id        Int     @id @default(autoincrement()) // 店舗のID
+  storeCode String  @unique                      // 店コード (ユニーク)
+  name      String                               // 店舗名
+  sales     Sale[]                               // 売上実績との1対多リレーション
+}
+
+model Sale {
+  id        Int      @id @default(autoincrement()) // 売上実績のID
+  quantity  Int                                     // 売上数量
+  total     Float                                   // 売上総額
+  saleDate  DateTime                                // 売上日
+  saleTime  DateTime                                // 売上時刻
+
+  productId Int                                     // 商品ID (外部キー)
+  product   Product   @relation(fields: [productId], references: [id]) // 商品とのリレーション
+
+  storeId   Int                                     // 店舗ID (外部キー)
+  store     Store     @relation(fields: [storeId], references: [id])   // 店舗とのリレーション
 }
