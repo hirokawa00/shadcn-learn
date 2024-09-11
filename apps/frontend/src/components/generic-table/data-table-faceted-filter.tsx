@@ -14,16 +14,19 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons';
 import type { Column } from '@tanstack/react-table';
+import {} from '@tanstack/react-table';
 import type { ComponentType } from 'react';
+
+export interface FilterOptions {
+  label: string;
+  value: string;
+  icon?: ComponentType<{ className?: string }>;
+}
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
-  options: {
-    label: string;
-    value: string;
-    icon?: ComponentType<{ className?: string }>;
-  }[];
+  options: FilterOptions[];
 }
 
 export function DataTableFacetedFilter<TData, TValue>({

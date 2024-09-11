@@ -1,7 +1,8 @@
 'use client';
 
 import { ContentLayout } from '@/components/admin-panel/content-layout';
-import { GenericTable } from '@/components/generic-table';
+import { GenericTable, GenericTableColumnHeader } from '@/components/generic-table';
+import { ArrowDownIcon, ArrowRightIcon, ArrowUpIcon } from '@radix-ui/react-icons';
 import type { ColumnDef } from '@tanstack/react-table';
 
 type UserType = {
@@ -103,6 +104,46 @@ const data = [
     status: '有効',
   },
   { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 14,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 14,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 14,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
+  { id: 13, name: '山田 太郎', email: 'taro.yamada@example.com', role: 'スタッフ', store: '東京本店', status: '有効' },
+  {
+    id: 14,
+    name: '佐藤 花子',
+    email: 'hanako.sato@example.com',
+    role: 'マネージャー',
+    store: '大阪支店',
+    status: '有効',
+  },
+  { id: 15, name: '鈴木 一郎', email: 'ichiro.suzuki@example.com', role: '本部', store: '本社', status: '無効' },
   // 他のユーザーデータ...
 ];
 
@@ -111,12 +152,13 @@ export default function page() {
   const columns: ColumnDef<UserType>[] = [
     {
       accessorKey: 'id',
-      header: 'ID',
       cell: (info) => info.getValue(),
+      header: ({ column }) => <GenericTableColumnHeader column={column} title="ID" />,
+      enableHiding: false,
     },
     {
       accessorKey: 'name',
-      header: '名前',
+      header: ({ column }) => <GenericTableColumnHeader column={column} title="氏名" />,
       cell: (info) => info.getValue(),
     },
     {
@@ -141,9 +183,34 @@ export default function page() {
     },
   ];
 
+  const priorities = [
+    {
+      label: 'Low',
+      value: 'low',
+      icon: ArrowDownIcon,
+    },
+    {
+      label: 'Medium',
+      value: 'medium',
+      icon: ArrowRightIcon,
+    },
+    {
+      label: 'High',
+      value: 'high',
+      icon: ArrowUpIcon,
+    },
+  ];
+
   return (
     <ContentLayout title="ユーザー管理">
-      <GenericTable data={data} columns={columns} />
+      <GenericTable
+        data={data}
+        columns={columns}
+        filters={[
+          { columnName: 'store', title: '所属店舗', options: priorities },
+          { columnName: 'store', title: '所属店舗', options: priorities },
+        ]}
+      />
       {/*
       <Table className="">
         <TableHeader className=" sticky top-[60px] z-10 dark:bg-primary-foreground">
