@@ -23,7 +23,7 @@ export function DataTableToolbar<TData>({ table, filters }: DataTableToolbarProp
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="flex items-center justify-between sticky top-[60px] z-10 bg-primary-foreground">
+    <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter tasks..."

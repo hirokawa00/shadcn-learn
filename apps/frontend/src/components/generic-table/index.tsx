@@ -63,7 +63,10 @@ export function GenericTable<TData, TValue>({ columns, data, filters }: GenericT
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} filters={filters} />
+      <div className="sticky top-[60px] z-10 bg-primary-foreground space-y-2">
+        <DataTableToolbar table={table} filters={filters} />
+        <DataTablePagination table={table} />
+      </div>
       <div>
         <Table>
           <TableHeader className="sticky top-[92px] z-10 bg-primary-foreground">
@@ -100,7 +103,6 @@ export function GenericTable<TData, TValue>({ columns, data, filters }: GenericT
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
     </div>
   );
 }
