@@ -5,12 +5,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
-import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon } from '@radix-ui/react-icons';
+import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, DrawingPinIcon } from '@radix-ui/react-icons';
 import type {
   Column,
   ColumnDef,
@@ -188,8 +189,9 @@ export function GenericTableColumnHeader<TData, TValue>({
             <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             降順
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+            <DrawingPinIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             ピン
           </DropdownMenuItem>
         </DropdownMenuContent>
