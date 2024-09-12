@@ -4,7 +4,6 @@ import { ContentLayout } from '@/components/admin-panel/content-layout';
 import { GenericTable, GenericTableColumnHeader } from '@/components/generic-table';
 import { Checkbox } from '@/components/ui/checkbox';
 import type { User } from '@prisma/client';
-import { ArrowDownIcon, ArrowRightIcon, ArrowUpIcon } from '@radix-ui/react-icons';
 import type { ColumnDef } from '@tanstack/react-table';
 
 interface ClientProps {
@@ -47,22 +46,22 @@ export function Client({ user }: ClientProps) {
     },
     {
       accessorKey: 'email',
-      header: 'メールアドレス',
+      header: ({ column }) => <GenericTableColumnHeader column={column} title="メールアドレス" />,
       cell: (info) => info.getValue(),
     },
     {
       accessorKey: 'role',
-      header: '役割',
+      header: ({ column }) => <GenericTableColumnHeader column={column} title="役職" />,
       cell: (info) => info.getValue(),
     },
     {
       accessorKey: 'store',
-      header: '所属店舗',
+      header: ({ column }) => <GenericTableColumnHeader column={column} title="所属店舗" />,
       cell: (info) => info.getValue(),
     },
     {
       accessorKey: 'lastLogin',
-      header: '最終ログイン日時',
+      header: ({ column }) => <GenericTableColumnHeader column={column} title="最終ログイン日" />,
       cell: (info) => {
         const dateValue = info.getValue() as string | null;
         if (!dateValue) return '';
@@ -86,19 +85,16 @@ export function Client({ user }: ClientProps) {
 
   const priorities = [
     {
-      label: 'Low',
-      value: 'low',
-      icon: ArrowDownIcon,
+      label: 'User',
+      value: 'User',
     },
     {
-      label: 'Medium',
-      value: 'medium',
-      icon: ArrowRightIcon,
+      label: 'Manager',
+      value: 'Manager',
     },
     {
-      label: 'High',
-      value: 'high',
-      icon: ArrowUpIcon,
+      label: 'Admin',
+      value: 'Admin',
     },
   ];
 
@@ -107,10 +103,7 @@ export function Client({ user }: ClientProps) {
       <GenericTable
         data={user}
         columns={columns}
-        filters={[
-          { columnName: 'store', title: '所属店舗', options: priorities },
-          { columnName: 'store', title: '所属店舗', options: priorities },
-        ]}
+        filters={[{ columnName: 'role', title: '役職', options: priorities }]}
       />
     </ContentLayout>
   );

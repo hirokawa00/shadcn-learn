@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -18,10 +19,17 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
     <div className="flex items-center justify-between px-1">
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length >= 1 ? (
-          <div className="flex items-center">
+          <div className="flex items-center space-x-2">
             <Button variant="outline" onClick={() => table.resetRowSelection()} className="h-8 lg:px-3">
               <Cross2Icon className="h-4 w-4 mr-2" />
               <span>{table.getFilteredSelectedRowModel().rows.length} row selected</span>
+            </Button>
+
+            <Separator orientation="vertical" />
+
+            <Button variant="destructive" onClick={() => table.resetRowSelection()} className="h-7 lg:px-3">
+              <Cross2Icon className="h-4 w-4 mr-2" />
+              <span>削除</span>
             </Button>
           </div>
         ) : (

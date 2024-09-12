@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon } from '@radix-ui/react-icons';
@@ -14,6 +15,7 @@ import type {
   Column,
   ColumnDef,
   ColumnFiltersState,
+  ColumnPinningState,
   PaginationState,
   SortingState,
   VisibilityState,
@@ -51,6 +53,11 @@ export function GenericTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  //
+  const [rowHeight, setRowHeight] = React.useState<'default' | 'compact' | 'large'>('default');
+
+  // カラムの固定状態を管理するState
+  const [columnPinning, setColumnPinning] = React.useState<ColumnPinningState>({ left: ['select', 'id'], right: [] });
   // デフォルトのページネーション設定
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0, // デフォルトのページ番号
@@ -66,6 +73,7 @@ export function GenericTable<TData, TValue>({
       rowSelection,
       columnFilters,
       pagination: pagination,
+      columnPinning: columnPinning,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -82,46 +90,61 @@ export function GenericTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div className="w-full max-w-full space-y-4">
+      {/* ヘッダーとツールバーのラッパー */}
       <div className="sticky top-[60px] z-10 bg-primary-foreground space-y-2">
-        <DataTableToolbar table={table} filters={filters} />
+        <DataTableToolbar table={table} filters={filters} rowHeight={rowHeight} onRowHeightChange={setRowHeight} />
         <DataTablePagination table={table} />
       </div>
-      <div>
-        <Table>
-          <TableHeader className="sticky top-[92px] z-10 bg-primary-foreground">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
+
+      {/* ScrollAreaの範囲をテーブルのデータ部分だけに適用 */}
+      <div className="relative">
+        <ScrollArea className="whitespace-nowrap overflow-auto">
+          {/* テーブルヘッダーをstickyに設定しつつスクロール領域の外側に配置 */}
+          <Table>
+            <TableHeader className="sticky z-10 bg-primary-foreground">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="py-3">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+
+            {/* データ部分のスクロール可能領域 */}
+
+            <TableBody className="dark:text-gray-300">
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    // className="even:dark:bg-slate-950 even:bg-gray-100"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        className={rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3' : 'py-4'}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
     </div>
   );
@@ -164,6 +187,10 @@ export function GenericTableColumnHeader<TData, TValue>({
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
             <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             降順
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+            <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+            ピン
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
