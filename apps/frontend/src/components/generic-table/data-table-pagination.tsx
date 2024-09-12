@@ -38,7 +38,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-medium hidden md:inline-block">表示数</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -49,7 +49,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[50, 60, 70, 80, 90, 100].map((pageSize) => (
+              {[50, 100, 150, 200].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>
@@ -57,7 +57,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+        <div className="hidden md:flex px-30 items-center justify-center text-sm font-medium">
           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>
         <div className="flex items-center space-x-2">

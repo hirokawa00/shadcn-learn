@@ -82,7 +82,7 @@ export function DataTableToolbar<TData>({
         <MenubarMenu>
           <MenubarTrigger>
             <TextAlignMiddleIcon className="mr-2 h-4 w-4" />
-            サイズ
+            <span className="hidden md:inline-block">サイズ</span>
           </MenubarTrigger>
           <MenubarContent>
             <MenubarLabel>行間調整</MenubarLabel>
@@ -101,7 +101,7 @@ export function DataTableToolbar<TData>({
         <MenubarMenu>
           <MenubarTrigger>
             <MixerHorizontalIcon className="mr-2 h-4 w-4" />
-            View
+            <span className="hidden md:inline-block">表示</span>
           </MenubarTrigger>
           <MenubarContent>
             <MenubarLabel>表示項目</MenubarLabel>

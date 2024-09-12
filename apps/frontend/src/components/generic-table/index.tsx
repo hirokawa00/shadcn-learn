@@ -125,10 +125,25 @@ export function GenericTable<TData, TValue>({
                     data-state={row.getIsSelected() && 'selected'}
                     // className="even:dark:bg-slate-950 even:bg-gray-100"
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {/* 左側に固定されたカラムを表示 */}
+                    {row.getLeftVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
-                        className={rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3' : 'py-4'}
+                        className={
+                          rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
+                        }
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+
+                    {/* 通常のカラムを表示 */}
+                    {row.getCenterVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        className={
+                          rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
+                        }
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
@@ -175,6 +190,8 @@ export function GenericTableColumnHeader<TData, TValue>({
               <ArrowDownIcon className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === 'asc' ? (
               <ArrowUpIcon className="ml-2 h-4 w-4" />
+            ) : column.getIsPinned() ? (
+              <DrawingPinIcon className="ml-2 h-4 w-4" />
             ) : (
               <CaretSortIcon className="ml-2 h-4 w-4" />
             )}
