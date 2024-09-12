@@ -47,14 +47,14 @@ export function GenericTable<TData, TValue>({
   columns,
   data,
   filters,
-  pageSize = 50,
+  pageSize = 150,
 }: GenericTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   //
-  const [rowHeight, setRowHeight] = React.useState<'default' | 'compact' | 'large'>('default');
+  const [rowHeight, setRowHeight] = React.useState<'default' | 'compact' | 'large'>('compact');
 
   // カラムの固定状態を管理するState
   const [columnPinning, setColumnPinning] = React.useState<ColumnPinningState>({ left: ['select', 'id'], right: [] });
@@ -90,70 +90,71 @@ export function GenericTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full max-w-full px-2">
+    <div className="flex flex-col h-full">
       {/* ヘッダーとツールバーのラッパー */}
-      <div className="sticky top-[56px] z-10 bg-primary-foreground">
+      <div className="sticky top-0 z-10 bg-primary-foreground">
         <DataTableToolbar table={table} filters={filters} rowHeight={rowHeight} onRowHeightChange={setRowHeight} />
       </div>
-
-      {/* テーブルヘッダーをstickyに設定しつつスクロール領域の外側に配置 */}
-      <Table>
-        <TableHeader className="sticky z-10 top-[91px] bg-primary-foreground">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-
-        {/* データ部分のスクロール可能領域 */}
-
-        <TableBody className="dark:text-gray-300">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-                // className="even:dark:bg-slate-950 even:bg-gray-100"
-              >
-                {/* 左側に固定されたカラムを表示 */}
-                {row.getLeftVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={
-                      rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
-                    }
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-
-                {/* 通常のカラムを表示 */}
-                {row.getCenterVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={
-                      rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
-                    }
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+      <div className="flex-1 overflow-y-auto">
+        {/* テーブルヘッダーをstickyに設定しつつスクロール領域の外側に配置 */}
+        <Table>
+          <TableHeader className="sticky z-10 top-0 bg-primary-foreground">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+
+          {/* データ部分のスクロール可能領域 */}
+
+          <TableBody className="dark:text-gray-300">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  // className="even:dark:bg-slate-950 even:bg-gray-100"
+                >
+                  {/* 左側に固定されたカラムを表示 */}
+                  {row.getLeftVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={
+                        rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
+                      }
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+
+                  {/* 通常のカラムを表示 */}
+                  {row.getCenterVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={
+                        rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
+                      }
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-full text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
       <DataTablePagination table={table} />
     </div>
   );

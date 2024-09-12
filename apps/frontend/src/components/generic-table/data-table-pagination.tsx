@@ -16,7 +16,7 @@ interface DataTablePaginationProps<TData> {
 
 export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-between sticky bottom-0 py-1 bg-primary-foreground">
+    <div className="flex items-center justify-between sticky bottom-[0px] py-1 bg-primary-foreground">
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length >= 1 ? (
           <div className="flex items-center space-x-2">
@@ -49,7 +49,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[50, 100, 150, 200].map((pageSize) => (
+              {[10, 50, 100, 150, 200].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>
