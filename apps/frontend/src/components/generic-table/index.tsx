@@ -8,7 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, DrawingPinIcon } from '@radix-ui/react-icons';
@@ -91,77 +90,71 @@ export function GenericTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full max-w-full space-y-4">
+    <div className="w-full max-w-full px-2">
       {/* ヘッダーとツールバーのラッパー */}
-      <div className="sticky top-[60px] z-10 bg-primary-foreground space-y-2">
+      <div className="sticky top-[56px] z-10 bg-primary-foreground">
         <DataTableToolbar table={table} filters={filters} rowHeight={rowHeight} onRowHeightChange={setRowHeight} />
-        <DataTablePagination table={table} />
       </div>
 
-      {/* ScrollAreaの範囲をテーブルのデータ部分だけに適用 */}
-      <div className="relative">
-        <ScrollArea className="whitespace-nowrap overflow-auto">
-          {/* テーブルヘッダーをstickyに設定しつつスクロール領域の外側に配置 */}
-          <Table>
-            <TableHeader className="sticky z-10 bg-primary-foreground">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  ))}
-                </TableRow>
+      {/* テーブルヘッダーをstickyに設定しつつスクロール領域の外側に配置 */}
+      <Table>
+        <TableHeader className="sticky z-10 top-[91px] bg-primary-foreground">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id} colSpan={header.colSpan}>
+                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                </TableHead>
               ))}
-            </TableHeader>
+            </TableRow>
+          ))}
+        </TableHeader>
 
-            {/* データ部分のスクロール可能領域 */}
+        {/* データ部分のスクロール可能領域 */}
 
-            <TableBody className="dark:text-gray-300">
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}
-                    // className="even:dark:bg-slate-950 even:bg-gray-100"
+        <TableBody className="dark:text-gray-300">
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+                // className="even:dark:bg-slate-950 even:bg-gray-100"
+              >
+                {/* 左側に固定されたカラムを表示 */}
+                {row.getLeftVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className={
+                      rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
+                    }
                   >
-                    {/* 左側に固定されたカラムを表示 */}
-                    {row.getLeftVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className={
-                          rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
-                        }
-                      >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-
-                    {/* 通常のカラムを表示 */}
-                    {row.getCenterVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className={
-                          rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
-                        }
-                      >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
-                    No results.
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-      </div>
+                ))}
+
+                {/* 通常のカラムを表示 */}
+                {row.getCenterVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className={
+                      rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
+                    }
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <DataTablePagination table={table} />
     </div>
   );
 }
