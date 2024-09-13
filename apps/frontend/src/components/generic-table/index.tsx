@@ -30,7 +30,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+// file-saver ライブラリを使うと便利
 import * as React from 'react';
+
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar, type filterData } from './data-table-toolbar';
 
@@ -125,7 +127,7 @@ export function GenericTable<TData, TValue>({
                     <TableCell
                       key={cell.id}
                       className={
-                        rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
+                        rowHeight === 'compact' ? 'py-1' : rowHeight === 'default' ? 'py-1 text-base' : 'py-2 text-lg'
                       }
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -137,7 +139,7 @@ export function GenericTable<TData, TValue>({
                     <TableCell
                       key={cell.id}
                       className={
-                        rowHeight === 'compact' ? 'py-2' : rowHeight === 'default' ? 'py-3 text-base' : 'py-4 text-lg'
+                        rowHeight === 'compact' ? 'py-1' : rowHeight === 'default' ? 'py-1 text-base' : 'py-2 text-lg'
                       }
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

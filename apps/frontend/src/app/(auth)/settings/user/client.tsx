@@ -3,6 +3,7 @@
 import { ContentLayout } from '@/components/admin-panel/content-layout';
 import { GenericTable, GenericTableColumnHeader } from '@/components/generic-table';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Toaster } from '@/components/ui/sonner';
 import type { User } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
 
@@ -105,6 +106,7 @@ export function Client({ user }: ClientProps) {
         columns={columns}
         filters={[{ columnName: 'role', title: '役職', options: priorities }]}
       />
+      <Toaster />
     </ContentLayout>
   );
 }
