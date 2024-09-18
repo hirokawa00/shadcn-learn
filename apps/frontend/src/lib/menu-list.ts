@@ -1,4 +1,4 @@
-import { HomeIcon, type LucideIcon, Users } from 'lucide-react';
+import { Grid2x2CheckIcon, HomeIcon, LogInIcon, type LucideIcon } from 'lucide-react';
 
 type Submenu = {
   href: string;
@@ -33,51 +33,27 @@ export function getMenuList(pathname: string): Group[] {
         },
       ],
     },
-    // {
-    //   groupLabel: 'Menu',
-    //   menus: [
-    //     {
-    //       href: '',
-    //       label: '販売管理',
-    //       active: pathname.includes('/sales'),
-    //       icon: SquarePen,
-    //       submenus: [
-    //         {
-    //           href: '/sales/detail',
-    //           label: '売上明細',
-    //           active: pathname === '/sales/detail',
-    //         },
-    //         {
-    //           href: '/sales/summary',
-    //           label: '売上集計',
-    //           active: pathname === '/sales/summary',
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       href: '/categories',
-    //       label: 'Categories',
-    //       active: pathname.includes('/categories'),
-    //       icon: Bookmark,
-    //       submenus: [],
-    //     },
-    //     {
-    //       href: '/tags',
-    //       label: 'Tags',
-    //       active: pathname.includes('/tags'),
-    //       icon: Tag,
-    //       submenus: [],
-    //     },
-    //   ],
-    // },
     {
       groupLabel: 'Example',
       menus: [
         {
-          href: '/example/simple-data-view',
-          label: 'Simple data view',
-          active: pathname.includes('/simple-data-view'),
-          icon: Users,
+          href: '',
+          label: 'Data view',
+          active: pathname.includes('/example'),
+          icon: Grid2x2CheckIcon,
+          submenus: [
+            {
+              href: '/example/simple-data-view',
+              label: 'Simple data view',
+              active: pathname.includes('/simple-data-view'),
+            },
+          ],
+        },
+        {
+          href: '/signin',
+          label: 'Signin',
+          active: pathname.includes('/signin'),
+          icon: LogInIcon,
           submenus: [],
         },
       ],
