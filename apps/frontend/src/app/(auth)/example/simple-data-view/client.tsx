@@ -22,11 +22,21 @@ import {
 } from '@tanstack/react-table';
 import * as React from 'react';
 import { DataTablePagination, DataTableToolbar, columns } from './components/generic-table';
+import { EditOption } from './components/generic-table-options/edit-option';
+import { ExportOption } from './components/generic-table-options/export-option';
+import { SelectedOption } from './components/generic-table-options/selected-option';
+import { SizeSettingOption } from './components/generic-table-options/size-setting-option';
+import { ViewOption } from './components/generic-table-options/view-option';
 
 interface ClientProps {
   user: User[];
 }
 
+/**
+ * simple-data-view Clientコンポーネント
+ * @param param0
+ * @returns
+ */
 export function Client({ user }: ClientProps) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -34,7 +44,6 @@ export function Client({ user }: ClientProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   //
   const [rowHeight, setRowHeight] = React.useState<'default' | 'compact' | 'large'>('compact');
-
   // カラムの固定状態を管理するState
   const [columnPinning, setColumnPinning] = React.useState<ColumnPinningState>({ left: ['select', 'id'], right: [] });
   // デフォルトのページネーション設定
@@ -91,8 +100,19 @@ export function Client({ user }: ClientProps) {
           <DataTableToolbar
             table={table}
             filters={[{ columnName: 'role', title: '役職', options: priorities }]}
-            rowHeight={rowHeight}
-            onRowHeightChange={setRowHeight}
+            startOptions={
+              <>
+                <SelectedOption table={table} />
+                <ExportOption table={table} />
+                <EditOption table={table} />
+              </>
+            }
+            endOptions={
+              <>
+                <SizeSettingOption rowHeight={rowHeight} onRowHeightChange={setRowHeight} />
+                <ViewOption table={table} />
+              </>
+            }
           />
         </div>
         <div className="flex-1 overflow-y-auto">

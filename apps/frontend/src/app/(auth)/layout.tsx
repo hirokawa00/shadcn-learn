@@ -1,4 +1,5 @@
 import AdminPanelLayout from '@/components/admin-panel/admin-panel-layout';
+import { Toaster } from '@/components/ui/sonner';
 
 /**
  * 認証済みページに表示する共通レイアウト
@@ -10,5 +11,10 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <AdminPanelLayout>{children}</AdminPanelLayout>;
+  return (
+    <AdminPanelLayout>
+      {children}
+      <Toaster />
+    </AdminPanelLayout>
+  );
 }
