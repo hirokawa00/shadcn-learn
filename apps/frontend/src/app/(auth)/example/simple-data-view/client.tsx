@@ -21,9 +21,12 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import * as React from 'react';
-import { DataTablePagination, DataTableToolbar, columns } from './components/generic-table';
+import { DataTableFooter, DataTableToolbar, columns } from './components/generic-table';
+import { DeleteOption } from './components/generic-table-options/delete-option';
 import { EditOption } from './components/generic-table-options/edit-option';
 import { ExportOption } from './components/generic-table-options/export-option';
+import { PaginationOption } from './components/generic-table-options/pagination-option';
+import { RefreshOption } from './components/generic-table-options/refresh-option';
 import { SelectedOption } from './components/generic-table-options/selected-option';
 import { SizeSettingOption } from './components/generic-table-options/size-setting-option';
 import { ViewOption } from './components/generic-table-options/view-option';
@@ -175,7 +178,19 @@ export function Client({ user }: ClientProps) {
             </TableBody>
           </Table>
         </div>
-        <DataTablePagination table={table} />
+        <DataTableFooter
+          startOptions={
+            <>
+              <DeleteOption table={table} />
+              <RefreshOption table={table} />
+            </>
+          }
+          endOptions={
+            <>
+              <PaginationOption table={table} pageSize={[100, 150, 200]} />
+            </>
+          }
+        />
       </div>
     </ContentLayout>
   );
