@@ -48,7 +48,7 @@ export function Client({ user }: ClientProps) {
   //
   const [rowHeight, setRowHeight] = React.useState<'default' | 'compact' | 'large'>('compact');
   // カラムの固定状態を管理するState
-  const [columnPinning, setColumnPinning] = React.useState<ColumnPinningState>({ left: ['select', 'id'], right: [] });
+  const [columnPinning] = React.useState<ColumnPinningState>({ left: ['select', 'id'], right: [] });
   // デフォルトのページネーション設定
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0, // デフォルトのページ番号

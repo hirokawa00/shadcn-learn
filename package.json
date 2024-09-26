@@ -6,6 +6,7 @@
   "scripts": {
     "fe": "pnpm -C apps/frontend",
     "dev": "turbo dev",
+    "build": "turbo build",
     "lint": "turbo lint"
   },
   "keywords": [],

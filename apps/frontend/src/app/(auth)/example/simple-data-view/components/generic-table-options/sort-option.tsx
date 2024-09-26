@@ -6,14 +6,6 @@ import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MixerHorizontalIcon } from '@radix-ui/react-icons';
-import type { Table } from '@tanstack/react-table';
-
-/**
- *  ソートオプションコンポーネントProps
- */
-interface SortOptionProps<TData> {
-  table: Table<TData>;
-}
 
 /**
  * ソートオプションコンポーネント
@@ -21,7 +13,7 @@ interface SortOptionProps<TData> {
  * @param param0
  * @returns
  */
-export function SortOption<TData>({ table }: SortOptionProps<TData>) {
+export function SortOption() {
   return (
     <>
       <Popover>
