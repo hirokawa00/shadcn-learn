@@ -134,7 +134,6 @@ export function Client({ user }: ClientProps) {
             </TableHeader>
 
             {/* データ部分のスクロール可能領域 */}
-
             <TableBody className="dark:text-gray-300">
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
